@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -29,12 +29,10 @@ public class User implements UserDetails {
     private String lastname;
     private List<String> roles;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-
         return authorities;
     }
 

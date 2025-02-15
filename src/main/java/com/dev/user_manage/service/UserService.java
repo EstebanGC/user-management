@@ -1,5 +1,6 @@
 package com.dev.user_manage.service;
 
+import com.dev.user_manage.dto.AuthUser;
 import com.dev.user_manage.dto.RegisterUser;
 import com.dev.user_manage.entity.Role;
 import com.dev.user_manage.entity.User;
@@ -26,6 +27,12 @@ public class UserService {
     public User register(RegisterUser registerUser) {
         User user  = mapToUser(registerUser);
         return userRepository.save(user);
+    }
+
+    public String auth(AuthUser authUser) {
+        User user = (User) userDetailsService.loadUserByUsername(authUser.getUsername());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authUser.getUsername(), authUser.getPassword()));
+        return jwtService.generateJwtToken(authUser.getUsername());
     }
 
     private User mapToUser(RegisterUser registerUser) {
