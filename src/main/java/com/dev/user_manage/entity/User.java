@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -27,6 +27,7 @@ public class User implements UserDetails {
     private String password;
     private String firstname;
     private String lastname;
+    @Singular
     private List<String> roles;
 
     @Override
