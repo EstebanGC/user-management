@@ -2,6 +2,7 @@ package com.dev.user_manage.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(toBuilder = true)
+@SuperBuilder
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -24,9 +25,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
     private String username;
-    private String password;
     private String firstname;
     private String lastname;
+    private String password;
+    @ElementCollection
     @Singular
     private List<String> roles;
 
