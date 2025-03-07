@@ -21,8 +21,8 @@ public class JwtService {
     }
 
     public String generateJwtToken(String username) {
-        Date issuedAt = new Date(System.currentTimeMillis() );
-        Date expirationDate = new Date(System.currentTimeMillis() + (1000 * 24 *24));
+        Date issuedAt = new Date(System.currentTimeMillis());
+        Date expirationDate = new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24));
 
         return Jwts.builder()
                 .header().type("JWT")
