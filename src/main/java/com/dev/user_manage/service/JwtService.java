@@ -25,20 +25,19 @@ public class JwtService {
         Date expirationDate = new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24));
 
         return Jwts.builder()
-                .header().type("JWT")
-                .and()
-                .subject(username)
-                .issuedAt(expirationDate)
+                .setSubject(username)
+                .issuedAt(issuedAt)  // Corregido
+                .expiration(expirationDate)  // También es necesario establecer la expiración
                 .signWith(generateSigningKey())
                 .compact();
     }
 
     private Claims extractClaims(String jwtToken) {
-        return Jwts.parser()
-                .verifyWith(generateSigningKey())
+        return Jwts.parserBuilder()
+                .setSigningKey(generateSigningKey())
                 .build()
-                .parseSignedClaims(jwtToken)
-                .getPayload();
+                .parseClaimsJws(jwtToken)
+                .getBody();
     }
 
     public String extractSubject(String jwtToken) {
