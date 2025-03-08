@@ -26,8 +26,8 @@ public class JwtService {
 
         return Jwts.builder()
                 .setSubject(username)
-                .issuedAt(issuedAt)  // Corregido
-                .expiration(expirationDate)  // También es necesario establecer la expiración
+                .setIssuedAt(issuedAt)
+                .setExpiration(expirationDate)
                 .signWith(generateSigningKey())
                 .compact();
     }
