@@ -1,6 +1,5 @@
 package com.dev.user_manage.repository;
 
-import com.dev.user_manage.entity.Student;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
