@@ -23,28 +23,18 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String userId;
-    private String email;
+    private String user_Id;
+    private String username;
+    private String password;
     private String firstname;
     private String lastname;
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private List<String> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+        return authorities;
     }
 
     @Override
@@ -61,6 +51,7 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled() {
         return true;
