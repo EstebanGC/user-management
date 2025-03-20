@@ -3,6 +3,7 @@ package com.dev.user_manage.config;
 import com.dev.user_manage.entity.User;
 import com.dev.user_manage.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,19 +22,17 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
 
+    @Bean  // Asegúrate de añadir esta anotación también
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequest -> {
-                    httpRequest.requestMatchers("/register", "/auth")
-                            .permitAll();
-                    httpRequest.requestMatchers(HttpMethod.POST)
-                            .hasAuthority("ADMIN")
-                            .anyRequest()
-                            .authenticated();
+                    httpRequest.requestMatchers("/register", "/auth").permitAll();
+                    httpRequest.requestMatchers(HttpMethod.POST).hasAuthority("ADMIN");
+                    httpRequest.anyRequest().authenticated();
                 }).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider);
-    return http.build();
+        return http.build();
     }
 }
