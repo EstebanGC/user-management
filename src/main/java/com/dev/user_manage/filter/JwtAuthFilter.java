@@ -40,7 +40,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Extraer el token sin "Bearer "
+        //Extracting token without "Bearer"
         String jwtToken = authorizationHeader.substring(7);
 
         try {
@@ -54,7 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 context.setAuthentication(authToken);
             }
         } catch (Exception e) {
-            // Manejar errores de autenticación (loggear, respuesta de error, etc.)
+            // Authentication errors management (logging, error response, etc.)
             System.err.println("Error processing JWT: " + e.getMessage());
         }
 
