@@ -27,8 +27,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequest -> {
-                    httpRequest.requestMatchers("/register", "/auth").permitAll();
-                    httpRequest.requestMatchers(HttpMethod.POST).hasAuthority("ADMIN");
+                    httpRequest.requestMatchers("/api/users/register", "/api/users/auth").permitAll();
+                    httpRequest.requestMatchers(HttpMethod.POST, "/api/users").hasAuthority("ADMIN");
                     httpRequest.anyRequest().authenticated();
                 }).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
