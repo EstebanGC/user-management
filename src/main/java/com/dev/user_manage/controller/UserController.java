@@ -29,11 +29,11 @@ public class UserController {
         return ResponseEntity.ok(userService.auth(authUser));
     }
 
-    @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
+//    @GetMapping
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    public ResponseEntity<List<User>> getAllUsers() {
+//        return ResponseEntity.ok(userService.getAllUsers());
+//    }
 //
 //    @GetMapping("/{id}")
 //    @PreAuthorize("hasAuthority('ADMIN') or @userService.isUserOwner(#id, authentication.principal.username)")
