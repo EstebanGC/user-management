@@ -21,15 +21,17 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequest -> {
-                    httpRequest.requestMatchers("/api/users/register", "/api/users/auth").permitAll();
-                    httpRequest.requestMatchers(HttpMethod.POST, "/api/users").hasAuthority("ADMIN");
-                    httpRequest.anyRequest().authenticated();
+                    httpRequest.requestMatchers("/register", "/auth")
+                            .permitAll();
+                    httpRequest.requestMatchers(HttpMethod.POST)
+                            .hasAnyAuthority("ADMIN")
+                            .anyRequest()
+                            .authenticated();
                 }).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider);

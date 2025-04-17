@@ -47,8 +47,8 @@ public class AppConfig implements CommandLineRunner {
         return config.getAuthenticationManager();
     }
 
-
     //whatever
+    @Override
     public void run(String... args) throws Exception{
         User user = User.builder()
                 .firstname("firstname")

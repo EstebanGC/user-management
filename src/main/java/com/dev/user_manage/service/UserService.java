@@ -46,4 +46,8 @@ public class UserService {
                 .roles(List.of(Role.USER.name()))
                 .build();
     }
+
+    public List<User> getAllUsers() {
+        return (List<User>) userRepository.findAll();
+    }
 }
