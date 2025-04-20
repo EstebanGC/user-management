@@ -9,3 +9,5 @@ public class UserManageApplication {
 		SpringApplication.run(UserManageApplication.class, args);
 	}
 }
+
+
