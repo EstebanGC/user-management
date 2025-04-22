@@ -22,43 +22,20 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf(AbstractHttpConfigurer::disable)
-//                .cors(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(httpRequest ->
-//                        httpRequest
-//                                .requestMatchers("/register", "/auth").permitAll()
-//                                .requestMatchers(HttpMethod.POST).hasAnyAuthority("ADMIN")
-//                                .anyRequest().authenticated()
-//                )
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authenticationProvider(authenticationProvider);
-//        return http.build();
-//    }
-
-    @Bean  // Asegúrate de añadir esta anotación también
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-
                 .cors(AbstractHttpConfigurer::disable)
-
                 .authorizeHttpRequests(httpRequest -> {
-                    httpRequest.requestMatchers("/register", "/auth").permitAll();
-
-
+                    // Fix the paths to match the actual controller endpoints
+                    httpRequest.requestMatchers("/api/users/register", "/api/users/auth").permitAll();
                     httpRequest.requestMatchers(HttpMethod.POST).hasAuthority("ADMIN");
-
-
                     httpRequest.anyRequest().authenticated();
-
-                }).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .authenticationProvider(authenticationProvider);
+
         return http.build();
     }
 }

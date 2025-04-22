@@ -32,22 +32,54 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        SecurityContext context = SecurityContextHolder.getContext();
-        String jwtToken = request.getHeader("Authorization");
-        if(jwtToken == null || context.getAuthentication() != null){
+        final String authHeader = request.getHeader("Authorization");
+        final SecurityContext context = SecurityContextHolder.getContext();
+
+        // If there's no Authorization header or it doesn't start with "Bearer " or authentication is already set
+        if (authHeader == null || !authHeader.startsWith("Bearer ") || context.getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
-        jwtToken = jwtToken.substring(7);
-        String username = jwtService.extractSubject(jwtToken);
-        if(username != null && jwtService.isTokenValid(jwtToken)){
-            User user = (User) userDetailsService.loadUserByUsername(username);
-            var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            context.setAuthentication(authToken);
+
+        // Extract token and process
+        final String jwtToken = authHeader.substring(7); // Remove "Bearer " prefix
+        final String username = jwtService.extractSubject(jwtToken);
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (jwtService.isTokenValid(jwtToken)) {
+                User user = (User) userDetailsService.loadUserByUsername(username);
+                var authToken = new UsernamePasswordAuthenticationToken(
+                        user, null, user.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                context.setAuthentication(authToken);
+            }
         }
+
         filterChain.doFilter(request, response);
     }
+
+//    @Override
+//    protected void doFilterInternal(
+//            @NonNull HttpServletRequest request,
+//            @NonNull HttpServletResponse response,
+//            @NonNull FilterChain filterChain
+//    ) throws ServletException, IOException {
+//        SecurityContext context = SecurityContextHolder.getContext();
+//        String jwtToken = request.getHeader("Authorization");
+//        if(jwtToken == null || context.getAuthentication() != null){
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//        jwtToken = jwtToken.substring(7);
+//        String username = jwtService.extractSubject(jwtToken);
+//        if(username != null && jwtService.isTokenValid(jwtToken)){
+//            User user = (User) userDetailsService.loadUserByUsername(username);
+//            var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+//            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//            context.setAuthentication(authToken);
+//        }
+//        filterChain.doFilter(request, response);
+//    }
 }
 
 
