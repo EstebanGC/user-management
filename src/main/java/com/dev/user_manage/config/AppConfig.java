@@ -37,7 +37,8 @@ public class AppConfig implements CommandLineRunner {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(passwordEncoder());
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService());
         return daoAuthenticationProvider;
     }
@@ -51,10 +52,10 @@ public class AppConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception{
         User user = User.builder()
-                .firstname("firstname")
-                .lastname("lastname")
-                .username("username")
-                .password(passwordEncoder().encode("whatever"))
+                .firstname("iquark")
+                .lastname("iquark")
+                .username("iquark")
+                .password(passwordEncoder().encode("iquark"))
                 .roles(List.of(Role.ADMIN.name(), Role.USER.name()))
                 .build();
         userRepository.save(user);

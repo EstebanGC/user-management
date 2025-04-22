@@ -32,8 +32,11 @@ public class UserService {
     }
 
     public String auth(AuthUser authUser) {
-        User user = (User) userDetailsService.loadUserByUsername(authUser.getUsername());
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authUser.getUsername(), authUser.getPassword()));
+        // Primero autenticar (esto lanzará una excepción si falla)
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authUser.getUsername(), authUser.getPassword())
+        );
+        // Luego generar el token
         return jwtService.generateJwtToken(authUser.getUsername());
     }
 
