@@ -2,7 +2,6 @@ package com.dev.user_manage.controller;
 
 import com.dev.user_manage.dto.AuthUser;
 import com.dev.user_manage.dto.RegisterUser;
-import com.dev.user_manage.dto.UpdateUser;
 import com.dev.user_manage.entity.User;
 import com.dev.user_manage.service.UserService;
 import lombok.RequiredArgsConstructor;
